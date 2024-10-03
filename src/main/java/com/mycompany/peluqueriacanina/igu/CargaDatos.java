@@ -282,7 +282,7 @@ public class CargaDatos extends javax.swing.JFrame {
         
         control.guardar(nombreMasco, raza, color, nombreDue, celNombre, observaciones, alergico, atencion);  
         
-        JOptionPane optionPane  = new JOptionPane("Se guardó correctamente");   
+        JOptionPane optionPane  = new JOptionPane("Se guardó correctamente!!");   
         optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE); 
         
         JDialog dialog = optionPane.createDialog("Guardado Exitoso");
