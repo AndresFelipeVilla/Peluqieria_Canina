@@ -37,6 +37,32 @@ public class ControladoraPersistencia {
             Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public Mascotas traerMascota(int num_Cliente) {
+        return jpaMascota.findMascotas(num_Cliente);
+    }
+
+    public void modificarMascota(Mascotas masco) {
+        try {
+            jpaMascota.edit(masco);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public Duenio traerDuenio(int id_duenio) {
+        return jpaDuenio.findDuenio(id_duenio);
+    }
+
+    public void modificarDuenio(Duenio dueno) {
+        try { 
+            jpaDuenio.edit(dueno);
+        } catch (Exception ex) {
+            Logger.getLogger(ControladoraPersistencia.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    
     
     
     

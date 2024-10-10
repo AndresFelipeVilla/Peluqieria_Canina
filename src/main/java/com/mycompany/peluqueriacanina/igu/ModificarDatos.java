@@ -2,18 +2,26 @@
 package com.mycompany.peluqueriacanina.igu;
 
 import com.mycompany.peluqueriacanina.logica.Controladora;
-import java.util.HashSet;
+import com.mycompany.peluqueriacanina.logica.Mascotas;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-public class CargaDatos extends javax.swing.JFrame {
+
+
+public class ModificarDatos extends javax.swing.JFrame {
 
     
-    Controladora control = new Controladora(); 
+    Controladora control = null;
+    int num_Cliente;
+    Mascotas masco;
     
-    public CargaDatos() {
-        //control = new Controladora(); 
-        initComponents();
+    public ModificarDatos(int num_Cliente) {
+        control = new Controladora(); 
+        //this.num_Cliente = num_Cliente;
+        initComponents(); 
+        
+        cargarDatos(num_Cliente);
+        
     }
 
     
@@ -51,7 +59,7 @@ public class CargaDatos extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tw Cen MT Condensed", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel1.setText("CARGA DATOS");
+        jLabel1.setText("MODIFICACIÓN DATOS");
 
         jLabel2.setIcon(new javax.swing.ImageIcon("C:\\Users\\Felipe Villa\\Downloads\\perro (1).png")); // NOI18N
         jLabel2.setText("jLabel2");
@@ -129,7 +137,7 @@ public class CargaDatos extends javax.swing.JFrame {
         btnGuardar.setBackground(new java.awt.Color(0, 153, 153));
         btnGuardar.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 18)); // NOI18N
         btnGuardar.setForeground(new java.awt.Color(255, 255, 255));
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("Guardar Cambios");
         btnGuardar.setBorder(null);
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -158,11 +166,11 @@ public class CargaDatos extends javax.swing.JFrame {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(184, 184, 184)
                                 .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62)
-                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(46, 46, 46)
+                                .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(206, 206, 206)
+                                .addComponent(btnVolver, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(174, 174, 174)
                                 .addComponent(jLabel1)))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -284,25 +292,34 @@ public class CargaDatos extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         
+        //Datos de la Mascota
         String nombreMasco = txtNombre.getText();
         String raza = txtRaza.getText();
         String color = txtColor.getText(); 
         String nombreDue = txtNombreDuenio.getText();
-        String celNombre = txtCelDuenio.getText();
+        String celDuenio = txtCelDuenio.getText();
         String observaciones = txtObservaciones.getText();
         
+        //Datos del Dueño 
         String alergico = (String) cmbAlergico.getSelectedItem();
         String atencion = (String) cmbAtencion.getSelectedItem();
         
         
-        control.guardar(nombreMasco, raza, color, nombreDue, celNombre, observaciones, alergico, atencion);  
+        control.modificarMascota(masco,nombreMasco, raza, color, nombreDue, celDuenio, observaciones, alergico, atencion);  
         
-        JOptionPane optionPane  = new JOptionPane("Se guardó correctamente!!");   
-        optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);  
+        //Mensaje  
         
-        JDialog dialog = optionPane.createDialog("Guardado Exitoso");
-        dialog.setAlwaysOnTop(true);
-        dialog.setVisible(true); 
+        mostrarMensaje("Edición realizada correctamente", "Info", "Edición Correcta");
+        
+        
+        VerDatos pantalla = new VerDatos();
+        pantalla.setVisible(true);
+        pantalla.setLocationRelativeTo(null);
+        this.dispose(); 
+        
+        
+        
+            
         
         
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -340,4 +357,51 @@ public class CargaDatos extends javax.swing.JFrame {
     private javax.swing.JTextArea txtObservaciones;
     private javax.swing.JTextField txtRaza;
     // End of variables declaration//GEN-END:variables
+
+    private void cargarDatos(int num_Cliente) {
+        
+        this.masco = control.traerMascota(num_Cliente); 
+        
+        txtNombre.setText(masco.getNombre()); 
+        txtRaza.setText(masco.getRaza());
+        txtColor.setText(masco.getColor());
+        txtNombreDuenio.setText(masco.getUnDuenio().getNombre());
+        txtCelDuenio.setText(masco.getUnDuenio().getCelDuenio());
+        txtObservaciones.setText(masco.getObservaciones());
+        
+        if  (masco.getAlergico().equals("Si")){
+            cmbAlergico.setSelectedIndex(1);
+        }else { 
+            if (masco.getAlergico().equals("No")) {
+               cmbAlergico.setSelectedIndex(2); 
+            }           
+        }
+        
+        if  (masco.getAtecion_especial().equals("Si")){
+            cmbAtencion.setSelectedIndex(1);
+        }else { 
+            if (masco.getAtecion_especial().equals("No")) {
+               cmbAtencion.setSelectedIndex(2); 
+            }           
+        }
+        
+        
+    }   
+    
+    public void mostrarMensaje(String mensaje, String tipo, String titulo){
+            JOptionPane optionPane  = new JOptionPane(mensaje);
+            
+            if (tipo.equals("info")) {
+                optionPane.setMessageType(JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            else if(tipo.equals("Error")){
+                optionPane.setMessageType(JOptionPane.ERROR_MESSAGE); 
+            }
+            
+            JDialog dialog = optionPane.createDialog(titulo);
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(true);                 
+    }
+         
 }
